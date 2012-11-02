@@ -1,0 +1,29 @@
+{
+  "name" : "TagKick",
+  "version" : "1.0",
+  "description" : "Untag Facebook photos with one click",
+  "background" : {
+    "scripts": ["background.js"]
+  },
+  "page_action" :
+  {
+    "default_icon" : "tag-19.png",
+    "default_title" : "Untag photo"
+  },
+  "content_scripts" : [
+    {
+      "matches" : [
+        "http://www.facebook.com/*",
+        "https://www.facebook.com/*"
+      ],
+      "js" : ["jquery-1.8.2.min.js", "contentscript.js"],
+      "run_at" : "document_idle",
+      "all_frames" : false
+    }
+  ],
+  "icons" : {
+    "48" : "tag-48.png",
+    "128" : "tag-128.png"
+  },
+  "manifest_version": 2
+}
