@@ -30,6 +30,10 @@ function reportLink() {
   return $("a[href^='/ajax/report.php']:visible");
 }
 
+function photoActions() {
+  return $(".fbPhotosPhotoActions");
+}
+
 function checkbox() {
   return $("input[name=untag]:visible");
 }
@@ -74,10 +78,11 @@ chrome.extension.onMessage.addListener(onMessage);
 // http://stackoverflow.com/questions/7325701/chrome-extension-how-to-reload-re-execute-content-script-on-ajax-request
 if (window == top) {
   chrome.extension.onRequest.addListener( function(req, sender, sendResponse) {
-    var show = false;
     if (req.is_content_script) {
-      show = photoPage() && !lightboxActive() && canUntag();
+      waitFor(photoActions, function() {
+        var show = photoPage() && !lightboxActive() && canUntag();
+        sendResponse({is_content_script: true, show: show});
+      });
     }
-    sendResponse({is_content_script: true, show: show});
   });
 };
