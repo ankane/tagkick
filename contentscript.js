@@ -21,7 +21,7 @@ function lightboxActive() {
 }
 
 function canUntag() {
-  return reportLink().length > 0;
+  return reportLink().length > 0 && $(".fbPhotoRemoveFromProfileLink").length > 0;
 }
 
 // elements
@@ -68,21 +68,18 @@ function waitFor(eleFunc, callback) {
 // messaging
 
 function onMessage(request, sender, sendResponse) {
-  untagPhoto();
-  sendResponse({});
+  if (request.is_content_script) {
+    waitFor(photoActions, function() {
+      var show = photoPage() && !lightboxActive() && canUntag();
+      sendResponse({"is_content_script": true, "show": show});
+    });
+  }
+  else { // button clicked
+    untagPhoto();
+    sendResponse({});
+  }
+  return true;
 };
 
 // Listen for the content script to send a message to the background page.
 chrome.extension.onMessage.addListener(onMessage);
-
-// http://stackoverflow.com/questions/7325701/chrome-extension-how-to-reload-re-execute-content-script-on-ajax-request
-if (window == top) {
-  chrome.extension.onRequest.addListener( function(req, sender, sendResponse) {
-    if (req.is_content_script) {
-      waitFor(photoActions, function() {
-        var show = photoPage() && !lightboxActive() && canUntag();
-        sendResponse({is_content_script: true, show: show});
-      });
-    }
-  });
-};
