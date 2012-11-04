@@ -18,4 +18,4 @@ Due to Facebook's design, you can't untag yourself in your own photos at the mom
 
 ## Thanks
 
-Icon from [Branic1979](http://brankic1979.com/icons/).
+Icon from [Brankic1979](http://brankic1979.com/icons/).
