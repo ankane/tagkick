@@ -15,3 +15,7 @@ Go to `chrome://extensions/` in Chrome, choose "Load unpacked extension", and se
 # Limitations
 
 Due to Facebook's design, you can't untag yourself in your own photos at the moment.
+
+# Thanks
+
+Icon from [Branic1979](http://brankic1979.com/icons/).
