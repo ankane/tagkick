@@ -63,34 +63,10 @@ function waitFor(eleFunc, callback) {
 
 // messaging
 
-// var oldLocation;
-// setInterval( function() {
-//   if (window.location.href != oldLocation) {
-//     oldLocation = window.location.href;
-//     checkPage();
-//   }
-// }, 100);
-
 setInterval( function() {
   var show = photoPage() && !lightboxActive() && canUntag();
   chrome.extension.sendMessage({tagkick: true, show: show}, function(response) {});
 }, 100);
-
-// function checkPage() {
-//   var show = photoPage() && !lightboxActive() && canUntag();
-//   if (show) {
-//     waitFor(photoActions, function() {
-//       sendMessage(canUntag());
-//     });
-//   }
-//   else {
-//     sendMessage(false);
-//   }
-// }
-// 
-// function sendMessage(show) {
-//   chrome.extension.sendMessage({tagkick: true, show: show}, function(response) {});
-// }
 
 function onMessage(request, sender, sendResponse) {
   untagPhoto();
