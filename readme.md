@@ -2,6 +2,8 @@
 
 Untag Facebook photos with one click.
 
+The published version is available through the [Chrome Web Store](https://chrome.google.com/webstore/detail/tagkick/hnbgophbdhcjoihcpmafgemiikkadkgm).
+
 # Installing
 
 ```
