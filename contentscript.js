@@ -62,7 +62,7 @@ function waitFor(eleFunc, callback) {
       clearInterval(timer);
       callback();
     }
-  }, 100);
+  }, 50);
 }
 
 // messaging
