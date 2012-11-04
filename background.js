@@ -4,21 +4,18 @@ function onClicked(tab) {
 
 chrome.pageAction.onClicked.addListener(onClicked);
 
-function updatePageAction(tabId) {
-  chrome.tabs.sendMessage(tabId, {is_content_script: true}, function(response) {
-    if (response.is_content_script) {
-      if (response.show) {
-        chrome.pageAction.show(tabId);
-      }
-      else {
-        chrome.pageAction.hide(tabId);
-      }
+function onMessage(request, sender, sendResponse) {
+  if (request.tagkick) {
+    var tabId = sender.tab.id;
+    if (request.show) {
+      chrome.pageAction.show(tabId);
     }
-  });
-};
-
-chrome.tabs.onUpdated.addListener(function(tabId, change, tab) {
-  if (change.status == "complete") {
-    updatePageAction(tabId);
+    else {
+      chrome.pageAction.hide(tabId);
+    }
   }
-});
+  sendResponse({});
+  return true;
+}
+
+chrome.extension.onMessage.addListener(onMessage);

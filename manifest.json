@@ -17,7 +17,7 @@
         "https://www.facebook.com/*"
       ],
       "js" : ["jquery-1.8.2.min.js", "contentscript.js"],
-      "run_at" : "document_idle",
+      "run_at" : "document_end",
       "all_frames" : false
     }
   ],

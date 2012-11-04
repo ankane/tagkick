@@ -1,11 +1,11 @@
 function untagPhoto() {
-  click(reportLink());
+  reportLink().get(0).click(); // can't just use click()
   waitFor(checkbox, function() {
-    click(checkbox());
-    click(submitButton());
+    checkbox().click();
+    submitButton().click();
     waitFor(closeButton, function() {
-      click(closeButton());
-      click(nextLink());
+      closeButton().click();
+      nextLink().click();
     });
   });
 }
@@ -21,7 +21,7 @@ function lightboxActive() {
 }
 
 function canUntag() {
-  return reportLink().length > 0 && $(".fbPhotoRemoveFromProfileLink").length > 0;
+  return reportLink().length > 0 && $(".fbPhotoRemoveFromProfileLink:visible").length > 0;
 }
 
 // elements
@@ -31,7 +31,7 @@ function reportLink() {
 }
 
 function photoActions() {
-  return $(".fbPhotosPhotoActions");
+  return $(".fbPhotosPhotoActions:visible");
 }
 
 function checkbox() {
@@ -43,18 +43,14 @@ function submitButton() {
 }
 
 function closeButton() {
-  return $(".uiOverlayButton");
+  return $(".layerCancel.uiOverlayButton.uiButtonConfirm:visible");
 }
 
 function nextLink() {
-  return $("a.photoPageNextNav");
+  return $("a.photoPageNextNav:visible");
 }
 
 // helpers
-
-function click(ele) {
-  ele.get(0).click();
-}
 
 function waitFor(eleFunc, callback) {
   var timer = setInterval( function() {
@@ -67,17 +63,38 @@ function waitFor(eleFunc, callback) {
 
 // messaging
 
+// var oldLocation;
+// setInterval( function() {
+//   if (window.location.href != oldLocation) {
+//     oldLocation = window.location.href;
+//     checkPage();
+//   }
+// }, 100);
+
+setInterval( function() {
+  var show = photoPage() && !lightboxActive() && canUntag();
+  chrome.extension.sendMessage({tagkick: true, show: show}, function(response) {});
+}, 100);
+
+// function checkPage() {
+//   var show = photoPage() && !lightboxActive() && canUntag();
+//   if (show) {
+//     waitFor(photoActions, function() {
+//       sendMessage(canUntag());
+//     });
+//   }
+//   else {
+//     sendMessage(false);
+//   }
+// }
+// 
+// function sendMessage(show) {
+//   chrome.extension.sendMessage({tagkick: true, show: show}, function(response) {});
+// }
+
 function onMessage(request, sender, sendResponse) {
-  if (request.is_content_script) {
-    waitFor(photoActions, function() {
-      var show = photoPage() && !lightboxActive() && canUntag();
-      sendResponse({"is_content_script": true, "show": show});
-    });
-  }
-  else { // button clicked
-    untagPhoto();
-    sendResponse({});
-  }
+  untagPhoto();
+  sendResponse({});
   return true;
 };
 
