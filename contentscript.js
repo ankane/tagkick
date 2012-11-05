@@ -1,11 +1,14 @@
 function untagPhoto() {
-  reportLink().get(0).click(); // can't just use click()
-  waitFor(checkbox, function() {
-    checkbox().click();
-    submitButton().click();
-    waitFor(closeButton, function() {
-      closeButton().click();
-      nextLink().click();
+  click(optionsButton());
+  waitFor(reportLink, function() {
+    click(reportLink());
+    waitFor(checkbox, function() {
+      checkbox().prop("checked", true);
+      click(submitButton());
+      waitFor(closeButton, function() {
+        click(closeButton());
+        click(nextLink());
+      });
     });
   });
 }
@@ -16,22 +19,22 @@ function photoPage() {
   return window.location.pathname == "/photo.php";
 }
 
-function lightboxActive() {
-  return $("._3qw").length > 0;
+function canUntag() {
+  return !owner() && $(".fbPhotoRemoveFromProfileLink:visible").length > 0;
 }
 
-function canUntag() {
-  return reportLink().length > 0 && $(".fbPhotoRemoveFromProfileLink:visible").length > 0;
+function owner() {
+  return $("a.editPhoto:visible").length > 0;
 }
 
 // elements
 
-function reportLink() {
-  return $("a[href^='/ajax/report.php']:visible");
+function optionsButton() {
+  return $("a.fbPhotoSnowliftDropdownButton");
 }
 
-function photoActions() {
-  return $(".fbPhotosPhotoActions:visible");
+function reportLink() {
+  return $("a[href^='/ajax/report.php']:visible");
 }
 
 function checkbox() {
@@ -43,20 +46,27 @@ function submitButton() {
 }
 
 function closeButton() {
-  return $(".layerCancel.uiOverlayButton.uiButtonConfirm:visible");
+  return $("div[role=dialog]:visible a.uiButtonConfirm[href=#]");
 }
 
 function nextLink() {
-  return $("a.photoPageNextNav:visible");
+  return $("a.snowliftPager.next");
 }
 
 // helpers
+
+function click(ele) {
+  ele.get(0).click();
+}
 
 function waitFor(eleFunc, callback) {
   var timer = setInterval( function() {
     if (eleFunc().length > 0) {
       clearInterval(timer);
-      callback();
+      // give events time to bind
+      setTimeout( function() {
+        callback();
+      }, 50);
     }
   }, 50);
 }
@@ -64,7 +74,7 @@ function waitFor(eleFunc, callback) {
 // messaging
 
 setInterval( function() {
-  var show = photoPage() && !lightboxActive() && canUntag();
+  var show = photoPage() && canUntag();
   chrome.extension.sendMessage({tagkick: true, show: show}, function(response) {
     if (response.clicked) {
       untagPhoto();
