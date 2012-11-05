@@ -19,6 +19,10 @@ function photoPage() {
   return window.location.pathname == "/photo.php";
 }
 
+function lightboxActive() {
+  return lightbox().length > 0;
+}
+
 function canUntag() {
   return !owner() && $(".fbPhotoRemoveFromProfileLink:visible").length > 0;
 }
@@ -29,12 +33,16 @@ function owner() {
 
 // elements
 
+function lightbox() {
+  return $("div[aria-label='Facebook Photo Theater']");
+}
+
 function optionsButton() {
-  return $("a.fbPhotoSnowliftDropdownButton");
+  return lightbox().find("a.fbPhotoSnowliftDropdownButton");
 }
 
 function reportLink() {
-  return $("a[href^='/ajax/report.php']:visible");
+  return lightbox().find("a[href^='/ajax/report.php']:visible");
 }
 
 function checkbox() {
@@ -74,7 +82,7 @@ function waitFor(eleFunc, callback) {
 // messaging
 
 setInterval( function() {
-  var show = photoPage() && canUntag();
+  var show = photoPage() && lightboxActive() && canUntag();
   chrome.extension.sendMessage({tagkick: true, show: show}, function(response) {
     if (response.clicked) {
       untagPhoto();
