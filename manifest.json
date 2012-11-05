@@ -1,6 +1,6 @@
 {
   "name" : "TagKick",
-  "version" : "1.0.2",
+  "version" : "1.0.3",
   "description" : "Untag Facebook photos with one click",
   "background" : {
     "scripts": ["background.js"]
