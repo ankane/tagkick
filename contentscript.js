@@ -65,14 +65,9 @@ function waitFor(eleFunc, callback) {
 
 setInterval( function() {
   var show = photoPage() && !lightboxActive() && canUntag();
-  chrome.extension.sendMessage({tagkick: true, show: show}, function(response) {});
-}, 100);
-
-function onMessage(request, sender, sendResponse) {
-  untagPhoto();
-  sendResponse({});
-  return true;
-};
-
-// Listen for the content script to send a message to the background page.
-chrome.extension.onMessage.addListener(onMessage);
+  chrome.extension.sendMessage({tagkick: true, show: show}, function(response) {
+    if (response.clicked) {
+      untagPhoto();
+    }
+  });
+}, 50);

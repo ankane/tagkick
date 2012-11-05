@@ -25,8 +25,5 @@
     "48" : "tag-48.png",
     "128" : "tag-128.png"
   },
-  "permissions": [
-    "tabs"
-  ],
   "manifest_version": 2
 }

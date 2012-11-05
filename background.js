@@ -1,10 +1,13 @@
+var clicked = false;
 function onClicked(tab) {
-  chrome.tabs.sendMessage(tab.id, {}, function(response) {});
+  clicked = true;
 }
 
 chrome.pageAction.onClicked.addListener(onClicked);
 
 function onMessage(request, sender, sendResponse) {
+  var response = {};
+
   if (request.tagkick) {
     var tabId = sender.tab.id;
     if (request.show) {
@@ -13,8 +16,13 @@ function onMessage(request, sender, sendResponse) {
     else {
       chrome.pageAction.hide(tabId);
     }
+    if (clicked) {
+      clicked = false;
+      response["clicked"] = true;
+    }
   }
-  sendResponse({});
+
+  sendResponse(response);
   return true;
 }
 
