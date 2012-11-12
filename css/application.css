@@ -1,0 +1,16 @@
+body {
+  padding-top: 20px;
+  padding-bottom: 40px;
+}
+
+.container {
+  width: 853px;
+}
+
+#buttons {
+  margin-bottom: 40px;
+}
+
+#buttons a {
+  margin-right: 40px;
+}
