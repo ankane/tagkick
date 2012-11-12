@@ -34,7 +34,7 @@ function owner() {
 // elements
 
 function lightbox() {
-  return $("div[aria-label='Facebook Photo Theater']");
+  return $("div.fbPhotoSnowlift:visible");
 }
 
 function optionsButton() {
