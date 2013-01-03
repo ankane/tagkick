@@ -24,7 +24,7 @@ function lightboxActive() {
 }
 
 function canUntag() {
-  return !owner() && $(".fbPhotoRemoveFromProfileLink:visible").length > 0;
+  return !owner() && $(".unsub_link:visible").length > 0;
 }
 
 function owner() {
