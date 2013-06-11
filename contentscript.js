@@ -3,7 +3,7 @@ function untagPhoto() {
   waitFor(reportLink, function() {
     click(reportLink());
     waitFor(checkbox, function() {
-      checkbox().prop("checked", true);
+      click(checkbox());
       click(submitButton());
       waitFor(closeButton, function() {
         click(closeButton());
@@ -42,7 +42,7 @@ function optionsButton() {
 }
 
 function reportLink() {
-  return lightbox().find("a[href^='/ajax/report.php']:visible");
+  return lightbox().find("a[href^='/ajax/report']:visible");
 }
 
 function checkbox() {
@@ -50,11 +50,11 @@ function checkbox() {
 }
 
 function submitButton() {
-  return checkbox().closest("form").find("input[type=submit]:visible");
+  return checkbox().closest("form").find("button[type=submit]:visible");
 }
 
 function closeButton() {
-  return $("div[role=dialog]:visible a.uiButtonConfirm[href=#]");
+  return $("div[role=dialog]:visible a.uiOverlayButton[href=#]");
 }
 
 function nextLink() {
